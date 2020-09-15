@@ -1,0 +1,11 @@
+extends layout/page-default.pug
+
+block styles
+  link(rel="stylesheet", type="text/css", href="/css/index.css")
+
+block content
+  main
+    form(action="/" method="POST")
+      label(for="username") Username: 
+      input(name="username" id="username") 
+      button(type="submit") Enviar

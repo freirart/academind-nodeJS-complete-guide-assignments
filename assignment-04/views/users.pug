@@ -1,0 +1,14 @@
+extends layout/page-default.pug
+
+block styles
+  link(rel="stylesheet", type="text/css", href="/css/users.css")
+
+block content
+  main
+    if users.length > 0
+      h1 User List
+      ul.user-list
+        each user in users
+          li #{user.username}
+    else
+      h1 No users registered!
