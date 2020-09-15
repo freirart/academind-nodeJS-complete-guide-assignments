@@ -1,0 +1,44 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Tahoma, Arial, Helvetica, sans-serif;
+}
+
+header {
+  background: #ffe449;
+  color: #3d3d3d;
+  min-height: 4rem;
+  align-items: center;
+  user-select: none;
+}
+
+ul, header {
+  display: flex;
+}
+
+ul li {
+  list-style: none;
+  margin: 1rem;
+}
+
+ul li.active, ul li:hover {
+  color: #c300ff;
+  cursor: pointer;
+}
+
+ul li a {
+  text-decoration: none;
+  color: inherit;
+}
+
+main {
+  padding: 1rem;
+}
+
+h1 {
+  text-align: center;
+}
