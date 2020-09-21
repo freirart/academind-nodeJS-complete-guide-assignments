@@ -1,0 +1,10 @@
+extends components/header.pug
+
+block styles
+  link(rel="stylesheet" type="text/css" href="/add-product.css")
+
+block content
+  form(method="POST" action="/admin/add-product")
+    label(for="title") Title
+    input(id="title" name="title" required)
+    button(type="submit") + Add Book

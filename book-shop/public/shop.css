@@ -1,0 +1,20 @@
+ul {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  border: 1px solid #bbb;
+  padding: 1rem;
+}
+
+ul li {
+  margin: 1rem;
+  list-style: none;
+  transition: .2s;
+  cursor: pointer;
+}
+
+ul li:hover {
+  color: #ff6b6b;
+}

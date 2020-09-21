@@ -1,0 +1,54 @@
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  font-family: 'Inter', Arial, Helvetica, sans-serif;
+}
+
+body, html {
+  height: 100vh;
+  width: 100vw;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 0 10%;
+}
+
+h1, h2 {
+  margin: 1rem;
+  font-family: 'Josefin Sans';
+}
+
+h1 + h2 {
+  font-family: 'Inter';
+  font-weight: 300;
+}
+
+header {
+  width: 100%;
+  padding: 1rem;
+  background: #1A535C;
+  color: #4ecdc4;
+  position: absolute;
+  display: block;
+  top: 0;
+}
+
+header nav {
+  width: 100%;
+  display: flex;
+}
+
+header nav a {
+  margin: 1rem;
+  text-decoration: none;
+  color: inherit;
+}
+
+header nav a:hover, header nav a.active {
+  color: #ffe66d;
+}
