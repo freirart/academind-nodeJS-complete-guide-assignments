@@ -1,0 +1,38 @@
+.btn-group{
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  position: relative;
+  bottom: .5rem;
+}
+
+.btn-group button {
+  align-self: flex-start;
+  min-width: 45%;
+  position: relative;
+  margin: 0;
+}
+
+.btn-group form:first-child button{
+  background: #ffe66d;
+}
+
+.btn-group form:first-child button:hover {
+  background: #f7dc59;
+  color: #1a535c;
+}
+
+.btn-group form:last-child button{
+  background: #ff6b6b;
+  color: #eef;
+}
+
+.btn-group form:last-child button:hover {
+  background: #ef4f4f;
+  color: #eef;
+}
+
+.btn-group button i {
+  display: flex;
+  justify-content: space-around;
+}

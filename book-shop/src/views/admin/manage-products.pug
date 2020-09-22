@@ -1,0 +1,27 @@
+extends ../components/header.pug
+
+block styles
+  link(rel="stylesheet" type="text/css" href="/product-list.css")
+  link(rel="stylesheet" type="text/css" href="/manage-products.css")
+
+block content
+  if products.length > 0
+    .prod-list
+      each p in products
+        article
+          h3 #{p.title}
+          img(src!=p.imageURL alt!=p.title)
+          strong $ #{p.price}
+          p #{p.description}
+          .btn-group
+            form(method="GET" action="/admin/edit-product")
+              button(type="submit")
+                i.fas.fa-edit
+                  span Edit
+            form(method="POST" action="/admin/delete-product")
+              button(type="submit")
+                i.fas.fa-trash-alt
+                  span Delete
+  else
+    h1 #{pageTitle}
+    h2 No Products Registered!

@@ -4,29 +4,43 @@ form {
   justify-content: center;
   padding: 2rem;
   border: 1px solid #bbb;
+  min-width: 500px;
 }
 
-form input {
+form label {
+  margin-top: 1rem;
+  font-weight: 400;
+}
+
+form input, form textarea {
   border: 0;
   background: #dee;
-  color: #335;
+  color: #668;
   padding: .5rem;
   font-size: 1rem;
+  font-weight: 300;
   border-radius: 3px;
   outline: none;
   display: flex;
+  width: 100%;
   justify-content: center;
   margin-top: .3rem;
   border: 2px solid transparent;
 }
 
-form input:focus{
+form textarea {
+  resize: none;
+  height: 5rem;
+}
+
+form input:focus, form textarea:focus{
   border-bottom: 2px solid #ff6b6b;
 }
 
-form input:valid {
+form input:valid, form textarea:valid {
   border: 2px solid #02c39a;
   transition: .3s;
+  background: #eef;
 }
 
 form button {

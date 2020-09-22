@@ -5,12 +5,16 @@ html
     title #{pageTitle}
     link(rel="stylesheet" type="text/css" href="/header.css")
     link(href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700&family=Josefin+Sans:wght@300;400;700&display=swap" rel="stylesheet")
+    script(src="https://kit.fontawesome.com/6e502b8152.js" crossorigin="anonymous")
     block styles
   body
     header
       nav
-        a(href="/" class=(path === '/' ? 'active' : '')) Shop
-        a(href="/admin/add-product" class=(path === '/admin/add-product' ? 'active' : '')) Add Product
+        .admin
+          a(href="/admin/add-product" class=(path === '/admin/add-product' ? 'active' : '')) Add Product
+          a(href="/admin/manage-products" class=(path === '/admin/manage-products' ? 'active' : '')) Manage Products
+        .shop
+          a(href="/cart" class=(path === '/cart' ? 'active' : '')) Cart
+          a(href="/" class=(path === '/' ? 'active' : '')) Shop
     main
-      h1(align="center") #{pageTitle}
       block content

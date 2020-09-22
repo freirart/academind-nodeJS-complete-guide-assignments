@@ -1,0 +1,21 @@
+extends ../components/header.pug
+
+block styles
+  link(rel="stylesheet" type="text/css" href="/product-list.css")
+
+block content
+  if products.length > 0
+    .prod-list
+      each p in products
+        article
+          h3 #{p.title}
+          img(src!=p.imageURL alt!=p.title)
+          strong $ #{p.price}
+          p #{p.description}
+          form(method="post" action="/add-to-cart")
+            button(type="submit")
+              i.fas.fa-cart-plus 
+                span Add to Cart
+  else
+    h1 #{pageTitle}
+    h2 No Products Registered!
