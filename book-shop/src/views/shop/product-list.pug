@@ -12,10 +12,16 @@ block content
           img(src!=p.imageURL alt!=p.title)
           strong $ #{p.price}
           p #{p.description}
-          form(method="post" action="/add-to-cart")
-            button(type="submit")
-              i.fas.fa-cart-plus 
+          .btn-group
+            form(method="GET" action!='/product/'+p.id)
+              button(type="submit")
+                i.fas.fa-info-circle
+                span Details
+            form(method="POST" action="/cart")
+              button(type="submit")
+                i.fas.fa-cart-plus 
                 span Add to Cart
+              input(type="hidden" name="productId" value!=p.id)
   else
     h1 #{pageTitle}
     h2 No Products Registered!

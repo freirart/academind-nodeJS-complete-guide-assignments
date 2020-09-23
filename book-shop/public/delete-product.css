@@ -1,0 +1,56 @@
+section {
+  max-height: 300px;
+}
+
+section img {
+  height: 100%;
+}
+
+.confirmation {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  margin: 1rem;
+  align-items: center;
+}
+
+.confirmation h2 {
+  font-family: 'Inter';
+  font-weight: 500;
+}
+
+.confirmation .btn-group {
+  max-width: 40%;
+  display: flex;
+}
+
+.btn-group form button {
+  padding: 1rem;
+  border: 0;
+  border-radius: 3px;
+  margin: 1rem;
+  width: 8rem;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  font-weight: 700;
+  color: #eff;
+  cursor: pointer;
+  transition: .2s;
+}
+
+.btn-group form:last-child button{
+  background: #02c39a;
+}
+
+.btn-group form:last-child button:hover {
+  background: #21bc9b;
+}
+
+.btn-group form:first-child button{
+  background: #ff6b6b;
+}
+
+.btn-group form:first-child button:hover {
+  background: #f76060;
+}

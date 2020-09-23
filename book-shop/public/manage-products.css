@@ -11,6 +11,7 @@
   min-width: 45%;
   position: relative;
   margin: 0;
+  border: 0;
 }
 
 .btn-group form:first-child button{
@@ -28,7 +29,7 @@
 }
 
 .btn-group form:last-child button:hover {
-  background: #ef4f4f;
+  background: #f76060;
   color: #eef;
 }
 

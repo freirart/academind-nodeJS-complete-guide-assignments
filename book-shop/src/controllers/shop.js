@@ -11,6 +11,15 @@ exports.getShopPage = (req, res, next) => {
   });
 };
 
+exports.getProductDetailsPage = (req, res, next) => {
+  const { productId } = req.params;
+  const product = Product.getProductById(productId);
+  res.render('shop/product-detail', {
+    product,
+    pageTitle: `Product ${productId} Details`,
+  })
+}
+
 exports.getCartPage = (req, res, next) => {
   res.render('shop/cart', { 
     pageTitle: 'Cart',

@@ -26,3 +26,12 @@ exports.postAddProduct = (req, res, next) => {
   product.save();
   res.redirect('/');
 };
+
+exports.postDeleteProduct = (req, res, next) => {
+  const { productId } = req.body;
+  const product = Product.getProductById(productId);
+  res.render('admin/delete-product', {
+    product,
+    pageTile: `Deleting product ${productId}`,
+  });
+}
