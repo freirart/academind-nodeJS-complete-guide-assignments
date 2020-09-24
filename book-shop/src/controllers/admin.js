@@ -22,7 +22,7 @@ exports.getManageProductsPage = (req, res, next) => {
 
 exports.postAddProduct = (req, res, next) => {
   const { title, imageURL, price, description } = req.body;
-  const product = new Product(title, imageURL, price, description);
+  const product = new Product(title, imageURL, Number(price), description);
   product.save();
   res.redirect('/');
 };
