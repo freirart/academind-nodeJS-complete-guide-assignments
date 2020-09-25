@@ -18,6 +18,25 @@ exports.getManageProductsPage = (req, res, next) => {
   });
 };
 
+exports.getEditProductPage = (req, res, next) => {
+  const { productId } = req.params;
+  const product = Product.getProductById(productId);
+  res.render('admin/edit-product', {
+    product,
+    pageTitle: 'Edit Product',
+    path: '/admin/edit-product',
+  });
+}; 
+
+exports.getDeleteProductPage = (req, res, next) => {
+  const { productId } = req.params;
+  const product = Product.getProductById(productId);
+  res.render('admin/delete-product', {
+    product,
+    pageTile: `Deleting product ${productId}`,
+  });
+}
+
 // POST requests
 
 exports.postAddProduct = (req, res, next) => {
@@ -29,9 +48,13 @@ exports.postAddProduct = (req, res, next) => {
 
 exports.postDeleteProduct = (req, res, next) => {
   const { productId } = req.body;
-  const product = Product.getProductById(productId);
-  res.render('admin/delete-product', {
-    product,
-    pageTile: `Deleting product ${productId}`,
-  });
+  Product.deleteProductById(productId);
+  console.log("Product deleted!");
+  res.redirect('/');
+}
+
+exports.postEditProduct = (req, res, next) => {
+  Product.editProductBy(req.body);
+  console.log("Product edited!");
+  res.redirect('/');
 }

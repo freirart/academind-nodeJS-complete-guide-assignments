@@ -5,18 +5,7 @@ block styles
   link(rel="stylesheet" type="text/css" href="/delete-product.css")
 
 block content
-  .confirmation
-    h2 Are you sure you want to delete the product below?
-    .btn-group
-      form(method="GET" action!='/product/'+product.id)
-        button(type="submit")
-          i.fas.fa-times
-          span Cancel
-      form(method="POST" action="/cart")
-        button(type="submit")
-          i.fas.fa-check
-          span Confirm
-        input(type="hidden" name="productId" value!=product.id)
+  h2 Are you sure you want to delete the product below?
   section
     article
       h1 #{product.title}
@@ -24,3 +13,14 @@ block content
       strong $ #{product.price}
     article
       img(src!=product.imageURL alt!=product.title)
+  .confirmation
+    .btn-group
+        form(method="GET" action="/")
+          button(type="submit")
+            i.fas.fa-times
+            span Cancel
+        form(method="POST" action="/admin/delete-product")
+          button(type="submit")
+            i.fas.fa-check
+            span Confirm
+          input(type="hidden" name="productId" value!=product.id)

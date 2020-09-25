@@ -13,5 +13,6 @@ block content
         button(type="submit")
           i.fas.fa-cart-plus 
           span Add to Cart
+        input(type="hidden" name="productId" value!=product.id)
     article
       img(src!=product.imageURL alt!=product.title)

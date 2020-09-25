@@ -3,9 +3,8 @@ const Product = require('./product');
 const cart = {products: [], totalPrice: 0};
 
 function increaseQtyByProductId(id) {
-  const product = searchForProductByItsId(id);
-  const productIndex = cart.products.indexOf(product);
-  cart.products[productIndex].qty += 1;
+  const index = cart.products.findIndex(product => product.id === id);
+  cart.products[index].qty += 1;
   increaseTotalPriceByProductId(id);
 }
 

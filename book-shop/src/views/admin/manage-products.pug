@@ -14,16 +14,14 @@ block content
           strong $ #{p.price}
           p #{p.description}
           .btn-group
-            form(method="POST" action="/admin/edit-product")
+            form(method="GET" action!="/admin/edit-product/"+p.id)
               button(type="submit")
                 i.fas.fa-edit
                 span Edit
-              input(type="hidden" name="productId" value!=p.id)
-            form(method="POST" action="/admin/delete-product")
+            form(method="GET" action!="/admin/delete-product/"+p.id)
               button(type="submit")
                 i.fas.fa-trash-alt
                 span Delete
-              input(type="hidden" name="productId" value!=p.id)
   else
     h1 #{pageTitle}
     h2 No Products Registered!
