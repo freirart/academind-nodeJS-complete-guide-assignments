@@ -1,5 +1,17 @@
 extends ../components/header.pug
 
+block styles
+  link(rel="stylesheet" type="text/css" href="/product-list.css")
+
 block content
-  h1 #{pageTitle}
-  h2 Products added to the cart...
+  if CartData.productsAddedToCart.length > 0
+    .prod-list
+      each p in CartData.productsAddedToCart
+        article
+          h3 #{p.product.title}
+          img(src!=p.product.imageURL alt!=p.product.title)
+          strong $ #{p.product.price}
+          p #{p.product.description}
+  else
+    h1 #{pageTitle}
+    h2 Products added to the cart...

@@ -1,3 +1,4 @@
+const Cart = require('../models/cart');
 const Product = require('../models/product');
 
 // GET requests
@@ -48,6 +49,7 @@ exports.postAddProduct = (req, res, next) => {
 
 exports.postDeleteProduct = (req, res, next) => {
   const { productId } = req.body;
+  Cart.removeItemById(productId);
   Product.deleteProductById(productId);
   console.log("Product deleted!");
   res.redirect('/');

@@ -31,7 +31,26 @@ module.exports = class Cart {
     else {
       increaseQtyByProductId(id);
     }
+  }
 
-    console.log(cart);
+  static removeItemById(id) {
+    const product = searchForProductByItsId(id);
+    if (product) {
+      const productPrice = Product.getProductById(id).price;
+      // removing its role on total price 
+      const addedValue = product.qty * productPrice;
+      cart.totalPrice = cart.totalPrice - addedValue;
+      
+      // finding the position of the product and removing it from there
+      const index = cart.products.indexOf(product);
+      cart.products.splice(index, 1);
+    }
+  }
+
+  static fetchCart() {
+    const productsAddedToCart = cart.products.map(product => {
+      return { product: Product.getProductById(product.id), qty: product.qty };
+    });
+    return { productsAddedToCart, totalPrice: cart.totalPrice };
   }
 }

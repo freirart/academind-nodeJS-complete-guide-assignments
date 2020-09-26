@@ -1,0 +1,7 @@
+Itens adicionados ao carrinho agora estão aparecendo na página.
+
+Exibi-los de maneira mais interessante, como fiz para exibir os carros.
+
+Fechar o carrinho, lado direito, fixo.
+
+Colocar botão de aumentar e diminuir a quantidade, remover do carrinho

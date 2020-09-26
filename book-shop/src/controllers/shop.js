@@ -22,7 +22,9 @@ exports.getProductDetailsPage = (req, res, next) => {
 }
 
 exports.getCartPage = (req, res, next) => {
-  res.render('shop/cart', { 
+  const CartData = Cart.fetchCart();
+  res.render('shop/cart', {
+    CartData,
     pageTitle: 'Cart',
     path: '/cart',
   });
