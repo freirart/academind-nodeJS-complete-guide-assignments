@@ -1,0 +1,156 @@
+.content {
+  width: 100%;
+  height: 100%;
+  padding: 2rem 0;
+  display: flex;
+  align-items: center;
+}
+
+.prod-list {
+  width: 70%;
+  height: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  padding-right: 2rem;
+}
+
+.finish-buy {
+  height: 100%;
+  border-left: 2px solid #ddd;
+  display: flex;
+  align-items: center;
+  width: 30%;
+  padding-left: 1rem;
+}
+
+.finish-buy .finish-buy-content {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  width: 100%;
+  padding: 1rem;
+  border-radius: 8px;
+  border: 1px solid #bbb;
+}
+
+.finish-buy button {
+  padding: 1.5rem;
+  width: 100%;
+  font-size: 1.25rem;
+  border: 0;
+  border-radius: 5px;
+  color: #fff;
+  background: #02c39a;
+  margin-top: 1rem;
+  cursor: pointer;
+  transition: .2s;
+}
+
+.finish-buy button:hover {
+  background: #21bc9b;
+}
+
+.finish-buy button span {
+  font-weight: 700;
+  margin: 1rem;
+}
+
+.prod-list article {
+  width: 100%;
+  height: 8rem;
+  display: flex;
+  justify-content: space-between;
+  padding: 1rem;
+  border: 1px solid #bbb;
+  border-radius: 8px;
+  margin: 0;
+  transition: .2s ease;
+}
+
+.prod-list article:hover {
+  transform: scale(1.025);
+}
+
+.prod-list article:nth-child(1n + 2) {
+  margin-top: -11rem;
+}
+
+.prod-list article .product-data,
+.prod-list article .controllers {
+  display: flex;
+  height: 100%;
+  align-items: center;
+}
+
+.prod-list article .product-data img {
+  width: 7rem;
+  height: 7rem;
+  object-fit: cover;
+  border-radius: 50%;
+  padding: .5rem;
+  margin-right: .3rem;
+}
+
+.prod-list article .controllers .left {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  margin-right: 2rem;
+  height: 100%;
+}
+
+.prod-list article .controllers .left strong {
+  font-size: 1.5rem;
+  margin: .3rem;
+}
+
+.prod-list article .controllers .left small {
+  font-size: .8rem;
+  margin: .2rem;
+  color: #aaa;
+}
+
+.prod-list article .controllers .left .qty-controllers {
+  display: flex;
+}
+
+.prod-list article .controllers .left .qty-controllers span,
+.prod-list article .controllers .left .qty-controllers button {
+  padding: .5rem .8rem;
+  border: 1px solid #bbb;
+  margin: .1rem;
+  cursor: pointer;
+  transition: .2s;
+  background: inherit;
+  color: inherit;
+  border-radius: 0;
+  height: 2.5rem;
+  width: 2.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.prod-list article .controllers .left .qty-controllers span:hover {
+  background: #eee;
+  border-color: #aaa;
+}
+
+.prod-list article .controllers button {
+  margin: 0;
+  border: 0;
+  background: #ff6b6b;
+  color: #fff;
+  height: 3rem;
+  width: 3rem;
+  font-size: 1.15rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: .2s;
+}
+
+.prod-list article .controllers button:hover {
+  background: #f76060;
+  color: #eef;
+}

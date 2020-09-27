@@ -1,17 +1,40 @@
 extends ../components/header.pug
 
 block styles
-  link(rel="stylesheet" type="text/css" href="/product-list.css")
+  link(rel="stylesheet" type="text/css" href="/cart.css")
 
 block content
   if CartData.productsAddedToCart.length > 0
-    .prod-list
-      each p in CartData.productsAddedToCart
-        article
-          h3 #{p.product.title}
-          img(src!=p.product.imageURL alt!=p.product.title)
-          strong $ #{p.product.price}
-          p #{p.product.description}
+    .content
+      .prod-list
+        each p in CartData.productsAddedToCart
+          article
+            .product-data
+              img(src!=p.product.imageURL alt!=p.product.title)
+              .text
+                h3 #{p.product.title}
+                p #{p.product.description}
+            .controllers
+              .left
+                strong $ #{p.product.price}
+                .qty-controllers
+                  button -
+                  span #{p.qty}
+                  form(method="POST" action="/cart")
+                    button(type="submit") +
+                    input(type="hidden" name="productId" value!=p.product.id)
+                small Total: $ !{p.product.price * p.qty}
+              form(action="/cart/delete-product/" method="POST")
+                button(type="submit")
+                  i.fas.fa-trash-alt
+                input(type="hidden" name="productId" value!=p.product.id)
+      .finish-buy
+        .finish-buy-content
+          p Total: 
+            strong $ #{CartData.totalPrice}
+          button 
+            i.fas.fa-cart-plus 
+            span Finish Order
   else
     h1 #{pageTitle}
     h2 Products added to the cart...
