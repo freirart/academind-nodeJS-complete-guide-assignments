@@ -5,6 +5,8 @@
   justify-content: center;
   align-items: center;
   margin-top: 2rem;
+  padding-top: 25rem;
+  padding-bottom: 5rem;
 }
 
 article {
@@ -27,12 +29,12 @@ article:hover {
   box-shadow: none;
 }
 
-article:nth-child(1n + 4) {
-  margin-top: 1.5rem;
-}
-
 article:nth-child(3n + 2) {
   margin: 0 2%;
+}
+
+article:nth-child(1n + 4) {
+  margin-top: 1.5rem;
 }
 
 article h3 {

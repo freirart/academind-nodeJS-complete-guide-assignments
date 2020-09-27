@@ -25,6 +25,7 @@ section article:last-child {
 }
 
 section article img {
+  padding-left: 1rem;
   width: 100%;
   object-fit: cover;
   border-left: 1px solid #bbb;

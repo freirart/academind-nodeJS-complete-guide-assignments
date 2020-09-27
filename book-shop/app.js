@@ -2,6 +2,8 @@ const path = require('path');
 const express = require('express');
 const bodyParser = require('body-parser');
 
+const sequelize = require('./src/utils/database');
+
 const adminRoutes = require('./src/routes/admin');
 const shopRoutes = require('./src/routes/shop');
 
@@ -22,4 +24,6 @@ app.use('/', shopRoutes);
 // default 404 page
 app.use(errorController.get404Page);
 
-app.listen(3000);
+sequelize.sync()
+  .then(() => app.listen(3000))
+  .catch(err => console.log(err));

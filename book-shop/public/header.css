@@ -35,6 +35,8 @@ header {
   background: #1A535C;
   color: #4ecdc4;
   display: block;
+  position: relative;
+  z-index: 1;
 }
 
 header nav {
