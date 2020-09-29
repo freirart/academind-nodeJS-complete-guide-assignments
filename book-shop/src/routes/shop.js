@@ -8,7 +8,7 @@ router.get('/', shopController.getShopPage);
 router.get('/cart', shopController.getCartPage);
 router.get('/product/:productId', shopController.getProductDetailsPage);
 
-router.post('/cart', shopController.postCart);
+router.post('/cart', shopController.postAddToCart);
 router.post('/cart/delete-product', shopController.postDeleteProductFromCart);
 // router.post('/cart/decrease-qty-by-one', shopController.postDecreaseQtyByOne);
 

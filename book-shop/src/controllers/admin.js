@@ -11,7 +11,7 @@ exports.getAddProductPage = (req, res, next) => {
 };
 
 exports.getManageProductsPage = (req, res, next) => {
-  Product.findAll()
+  req.user.getProducts()
     .then(products => {
       res.render('admin/manage-products', {
         products,
@@ -51,14 +51,13 @@ exports.getDeleteProductPage = (req, res, next) => {
 
 exports.postAddProduct = (req, res, next) => {
   const { title, imageURL, price, description } = req.body;
-  Product.create({ title, imageURL, price, description })
+  req.user.createProduct({ title, imageURL, price, description })
     .then(() => res.redirect('/'))
     .catch(err => console.log(err));
 };
 
 exports.postDeleteProduct = (req, res, next) => {
   const { productId } = req.body;
-  // Cart.removeItemById(productId);
   Product.findByPk(productId)
     .then(product => product.destroy())
     .then(() => {

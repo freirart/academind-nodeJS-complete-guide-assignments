@@ -4,34 +4,34 @@ block styles
   link(rel="stylesheet" type="text/css" href="/cart.css")
 
 block content
-  if CartData.productsAddedToCart.length > 0
+  if products.length > 0
     .content
       .prod-list
-        each p in CartData.productsAddedToCart
+        each p in products
           article
             .product-data
-              img(src!=p.product.imageURL alt!=p.product.title)
+              img(src!=p.imageURL alt!=p.title)
               .text
-                h3 #{p.product.title}
-                p #{p.product.description}
+                h3 #{p.title}
+                p #{p.description}
             .controllers
               .left
-                strong $ #{p.product.price}
+                strong $ #{p.price}
                 .qty-controllers
                   button -
-                  span #{p.qty}
+                  span #{p.cartItem.qty}
                   form(method="POST" action="/cart")
                     button(type="submit") +
-                    input(type="hidden" name="productId" value!=p.product.id)
-                small Total: $ !{p.product.price * p.qty}
+                    input(type="hidden" name="productId" value!=p.id)
+                small Total: $ !{p.price * p.cartItem.qty}
               form(action="/cart/delete-product/" method="POST")
                 button(type="submit")
                   i.fas.fa-trash-alt
-                input(type="hidden" name="productId" value!=p.product.id)
+                input(type="hidden" name="productId" value!=p.id)
       .finish-buy
         .finish-buy-content
           p Total: 
-            strong $ #{CartData.totalPrice}
+            strong $ 
           button 
             i.fas.fa-cart-plus 
             span Finish Order
