@@ -1,5 +1,4 @@
 const Product = require('../models/product');
-const Cart = require('../models/cart');
 
 // GET requests
 
@@ -38,6 +37,16 @@ exports.getCartPage = (req, res, next) => {
       });
     })
     .catch(err => console.log(err));
+};
+
+exports.getOrderPage = (req, res, next) => {
+  req.user.getOrders({ include: ['products'] })
+    .then(orders => {
+      res.render('shop/orders', {
+        orders,
+        pageTitle: 'Orders',
+      })
+    })
 };
 
 // POST requests
@@ -81,3 +90,28 @@ exports.postDeleteProductFromCart = (req, res, next) => {
     .then(productDestroyed => res.redirect('/cart'))
     .catch(err => console.log(err));
 }
+
+exports.postOrder = (req, res, next) => {
+  let fetchedCart;
+  req.user.getCart()
+    .then(cart => {
+      fetchedCart = cart;
+      return cart.getProducts()
+    })
+    .then(products => {
+      return req.user
+        .createOrder()
+        .then(order => {
+          return order.addProducts(
+              products.map(product => {
+                product.orderItem = { qty: product.cartItem.qty }
+                return product;
+              })
+            );
+        })
+        .catch(err => console.log(err));
+    })
+    .then(orderPosted => fetchedCart.setProducts(null))
+    .then(success => res.redirect('/orders'))
+    .catch(err => console.log(err));
+};

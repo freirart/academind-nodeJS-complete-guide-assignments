@@ -32,9 +32,10 @@ block content
         .finish-buy-content
           p Total: 
             strong $ 
-          button 
-            i.fas.fa-cart-plus 
-            span Finish Order
+          form(action="/create-order" method="POST")
+            button(type="submit")
+              i.fas.fa-cart-plus 
+              span Finish Order
   else
     h1 #{pageTitle}
     h2 Products added to the cart...

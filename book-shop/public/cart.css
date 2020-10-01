@@ -33,6 +33,10 @@
   border: 1px solid #bbb;
 }
 
+.finish-buy form {
+  width: 100%;
+}
+
 .finish-buy button {
   padding: 1.5rem;
   width: 100%;

@@ -1,0 +1,11 @@
+extends ../components/header.pug
+
+block content
+  if orders.length > 0
+    ul
+      each order in orders
+        li
+          h1 # #{order.id}
+          ul
+            each product in order.products
+              li #{product.title} (#{product.orderItem.qty})
