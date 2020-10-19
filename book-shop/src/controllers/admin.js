@@ -1,6 +1,5 @@
-const Cart = require('../models/cart');
-const Product = require('../models/product');
 
+const Product = require('../models/product');
 // GET requests
 
 exports.getAddProductPage = (req, res, next) => {
@@ -11,7 +10,7 @@ exports.getAddProductPage = (req, res, next) => {
 };
 
 exports.getManageProductsPage = (req, res, next) => {
-  req.user.getProducts()
+  Product.fetchAll()
     .then(products => {
       res.render('admin/manage-products', {
         products,
@@ -24,7 +23,7 @@ exports.getManageProductsPage = (req, res, next) => {
 
 exports.getEditProductPage = (req, res, next) => {
   const { productId } = req.params;
-  Product.findByPk(productId)
+  Product.findById(productId)
     .then(product => {
       res.render('admin/edit-product', {
         product,
@@ -37,7 +36,7 @@ exports.getEditProductPage = (req, res, next) => {
 
 exports.getDeleteProductPage = (req, res, next) => {
   const { productId } = req.params;
-  Product.findByPk(productId)
+  Product.findById(productId)
     .then(product => {
       res.render('admin/delete-product', {
         product,
@@ -51,32 +50,23 @@ exports.getDeleteProductPage = (req, res, next) => {
 
 exports.postAddProduct = (req, res, next) => {
   const { title, imageURL, price, description } = req.body;
-  req.user.createProduct({ title, imageURL, price, description })
+  const product = new Product(title, imageURL, price, description);
+  product.save()
     .then(() => res.redirect('/'))
     .catch(err => console.log(err));
 };
 
 exports.postDeleteProduct = (req, res, next) => {
   const { productId } = req.body;
-  Product.findByPk(productId)
-    .then(product => product.destroy())
-    .then(() => {
-      console.log("Product deleted!");
-      res.redirect('/');
-    })
+  Product.deleteById(productId)
+    .then(() => res.redirect('/'))
     .catch(err => console.log(err));
 }
 
 exports.postEditProduct = (req, res, next) => {
   const { id, title, imageURL, price, description } = req.body;
-  Product.findByPk(id)
-    .then(product => {
-      product.title = title;
-      product.imageURL = imageURL;
-      product.price = price;
-      product.description = description;
-      return product.save();
-    })
+  const updatedProduct = new Product(title, imageURL, price, description, id);
+  updatedProduct.save()
     .then(() => {
       console.log("Product edited!");
       res.redirect('/');

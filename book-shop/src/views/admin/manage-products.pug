@@ -14,11 +14,11 @@ block content
           strong $ #{p.price}
           p #{p.description}
           .btn-group
-            form(method="GET" action!="/admin/edit-product/"+p.id)
+            form(method="GET" action!="/admin/edit-product/"+p._id)
               button(type="submit")
                 i.fas.fa-edit
                 span Edit
-            form(method="GET" action!="/admin/delete-product/"+p.id)
+            form(method="GET" action!="/admin/delete-product/"+p._id)
               button(type="submit")
                 i.fas.fa-trash-alt
                 span Delete

@@ -19,7 +19,7 @@ block content
     label(for="description") Description
     textarea(id="description" name="description" required rows="3") #{product.description}
 
-    input(type="hidden" name="id" value!=product.id)
+    input(type="hidden" name="id" value!=product._id)
 
     button(type="submit")
       i.fas.fa-check 
