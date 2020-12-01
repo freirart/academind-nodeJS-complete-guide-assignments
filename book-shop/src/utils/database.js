@@ -1,15 +1,14 @@
-const mongodb = require('mongodb');
-const { MongoClient } = mongodb;
+const { MongoClient } = require('mongodb');
 
 let _db;
 
 const mongoConnect = (callback) => {
-  MongoClient.connect('mongodb+srv://artur:hbC8n2mEfS9IBxXx@cluster0.r74qt.mongodb.net/shop?retryWrites=true&w=majority')
+  MongoClient.connect(process.env.DB_URI, { useUnifiedTopology: true })
   .then(client => {
     _db = client.db();
     callback(client);
   })
-  .catch(err => console.log(err));
+  .catch(err => console.error(err));
 }
 
 const getDb = () => {

@@ -18,16 +18,18 @@ block content
               .left
                 strong $ #{p.price}
                 .qty-controllers
-                  button -
-                  span #{p.cartItem.qty}
+                  form(method="POST" action="/cart-decrease")
+                    button(type="submit") -
+                    input(type="hidden" name="productId" value!=p._id)
+                  span #{p.qty}
                   form(method="POST" action="/cart")
                     button(type="submit") +
-                    input(type="hidden" name="productId" value!=p.id)
-                small Total: $ !{p.price * p.cartItem.qty}
+                    input(type="hidden" name="productId" value!=p._id)
+                small Total: $ !{p.price * p.qty}
               form(action="/cart/delete-product/" method="POST")
                 button(type="submit")
                   i.fas.fa-trash-alt
-                input(type="hidden" name="productId" value!=p.id)
+                input(type="hidden" name="productId" value!=p._id)
       .finish-buy
         .finish-buy-content
           p Total: 

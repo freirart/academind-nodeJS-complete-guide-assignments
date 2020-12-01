@@ -1,5 +1,5 @@
-
 const Product = require('../models/product');
+
 // GET requests
 
 exports.getAddProductPage = (req, res, next) => {
@@ -18,7 +18,7 @@ exports.getManageProductsPage = (req, res, next) => {
         path: '/admin/manage-products',
       });
     })
-    .catch(err => console.log(err));
+    .catch(err => console.error(err));
 };
 
 exports.getEditProductPage = (req, res, next) => {
@@ -31,7 +31,7 @@ exports.getEditProductPage = (req, res, next) => {
         path: '/admin/edit-product',
       });
     })
-    .catch(err => console.log(err));
+    .catch(err => console.error(err));
 }; 
 
 exports.getDeleteProductPage = (req, res, next) => {
@@ -43,7 +43,7 @@ exports.getDeleteProductPage = (req, res, next) => {
         pageTile: `Deleting product ${productId}`,
       });
     })
-    .catch(err => console.log(err));
+    .catch(err => console.error(err));
 }
 
 // POST requests
@@ -53,23 +53,20 @@ exports.postAddProduct = (req, res, next) => {
   const product = new Product(title, imageURL, price, description);
   product.save()
     .then(() => res.redirect('/'))
-    .catch(err => console.log(err));
+    .catch(err => console.error(err));
 };
 
 exports.postDeleteProduct = (req, res, next) => {
   const { productId } = req.body;
   Product.deleteById(productId)
     .then(() => res.redirect('/'))
-    .catch(err => console.log(err));
+    .catch(err => console.error(err));
 }
 
 exports.postEditProduct = (req, res, next) => {
   const { id, title, imageURL, price, description } = req.body;
   const updatedProduct = new Product(title, imageURL, price, description, id);
   updatedProduct.save()
-    .then(() => {
-      console.log("Product edited!");
-      res.redirect('/');
-    })
-    .catch(err => console.log(err));
+    .then(() => res.redirect('/'))
+    .catch(err => console.error(err));
 }

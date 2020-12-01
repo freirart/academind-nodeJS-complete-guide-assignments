@@ -28,7 +28,6 @@ exports.getProductDetailsPage = (req, res, next) => {
 
 exports.getCartPage = (req, res, next) => {
   req.user.getCart()
-    .then(cart => cart.getProducts())
     .then(products => {
       res.render('shop/cart', {
         products,
@@ -36,7 +35,7 @@ exports.getCartPage = (req, res, next) => {
         path: '/cart',
       });
     })
-    .catch(err => console.log(err));
+    .catch(err => console.error(err));
 };
 
 exports.getOrderPage = (req, res, next) => {
@@ -53,42 +52,24 @@ exports.getOrderPage = (req, res, next) => {
 
 exports.postAddToCart = (req, res, next) => {
   const { productId } = req.body;
-  let fetchedCart;
-  let newQty = 1;
-  req.user.getCart()
-    .then(cart => {
-      fetchedCart = cart;
-      return cart.getProducts({ where: { id: productId } })
-    })
-    .then(products => {
-      let product;
-      if (products.length > 0) {
-        product = products[0];
-      }
-      if (product) {
-        const oldQty = product.cartItem.qty;
-        newQty = oldQty + 1;
-        return product;
-      }
-      return Product.findByPk(productId)
-    })
-    .then(product => {
-      return fetchedCart.addProduct(product, { through: { qty: newQty } });
-    })
-    .then(productAdded => res.redirect('/cart'))
-    .catch(err => console.log(err));
+  Product.findById(productId)
+    .then(product => req.user.addToCart(product))
+    .then(() => res.redirect('/cart'))
+    .catch(err => console.error(err));
 }
 
 exports.postDeleteProductFromCart = (req, res, next) => {
   const { productId } = req.body;
-  req.user.getCart()
-    .then(cart => cart.getProducts({ where: { id: productId } }))
-    .then(products => {
-      const product = products[0];
-      return product.cartItem.destroy();
-    })
-    .then(productDestroyed => res.redirect('/cart'))
-    .catch(err => console.log(err));
+  req.user.deleteItemFromCart(productId)
+    .then(() => res.redirect('/cart'))
+    .catch(err => console.error(err));
+}
+
+exports.postDecreaseCartItemQty = (req, res, next) => {
+  const { productId } = req.body;
+  req.user.decreaseCartItemQty(productId, req.user.deleteItemFromCart)
+    .then(() => res.redirect('/cart'))
+    .catch(err => console.error(err));
 }
 
 exports.postOrder = (req, res, next) => {
