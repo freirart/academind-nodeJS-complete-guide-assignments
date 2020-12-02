@@ -67,7 +67,7 @@ exports.postDeleteProductFromCart = (req, res, next) => {
 
 exports.postDecreaseCartItemQty = (req, res, next) => {
   const { productId } = req.body;
-  req.user.decreaseCartItemQty(productId, req.user.deleteItemFromCart)
+  req.user.decreaseCartItemQty(productId)
     .then(() => res.redirect('/cart'))
     .catch(err => console.error(err));
 }

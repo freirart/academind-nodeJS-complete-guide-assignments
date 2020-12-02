@@ -40,6 +40,19 @@ class Product {
   static deleteById(prodId) {
     const db = getDb();
     return db.collection('products').deleteOne({_id: new ObjectId(prodId) })
+      .then(() => {
+        db.collection('users').find().toArray()
+          .then(users => {
+            users.forEach(async (user) => {
+              const u = user;
+              u.cart.items = user.cart.items.filter(i => {
+                return i.productId.toString() !== prodId.toString();
+              });
+              db.collection('users').updateOne({ _id: u._id }, { $set: u })
+                .catch(err => console.error(err));
+            });
+          });
+      })
       .catch(err => console.error(err));
   }
 }

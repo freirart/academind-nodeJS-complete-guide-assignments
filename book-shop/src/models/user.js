@@ -99,10 +99,29 @@ class User {
 
     if (productIndex === -1) throw new Error;
     
-    if (this.cart.items[productIndex].qty - 1 === 0) 
-      return Promise.resolve();
+    let updatedCartItems = this.cart.items;
+    
+    if (this.cart.items[productIndex].qty - 1 === 0) {
+      updatedCartItems = this.cart.items.filter(item => {
+        return item.productId.toString() !== productId.toString();
+      });
+  
+      const db = getDb();
+      return db
+        .collection('users')
+        .updateOne(
+          { _id: new ObjectId(this._id) },
+          {
+            $set: { 
+              cart: { 
+                items: updatedCartItems, 
+                totalValue: getCartTotalValue(updatedCartItems)
+              } 
+            } 
+          }
+        );
+    }
 
-    const updatedCartItems = this.cart.items;
     updatedCartItems[productIndex].qty -= 1;
 
     const db = getDb();
