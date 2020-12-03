@@ -2,10 +2,15 @@ extends ../components/header.pug
 
 block content
   if orders.length > 0
-    ul
+    ul(style="align-self: flex-start; list-style: none; width: 100%;")
       each order in orders
-        li
-          h1 # #{order.id}
-          ul
-            each product in order.products
-              li #{product.title} (#{product.orderItem.qty})
+        li(style="line-height: 1.75rem; border: 1px solid lightgray; width: 100%; margin: .5rem 0;")
+          h1(style="text-align: left;") # #{order._id}
+          ul(style="padding-left: 2rem;")
+            each item in order.items
+              li(style="line-height: 2.75rem;") #{item.title} (#{item.qty}) $ 
+                b #{item.qty * item.price}
+
+  else
+    h1 #{pageTitle}
+    h2 Quite empty right here, don't you think?

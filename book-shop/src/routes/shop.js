@@ -12,7 +12,6 @@ router.get('/orders', shopController.getOrderPage);
 router.post('/cart', shopController.postAddToCart);
 router.post('/cart-decrease', shopController.postDecreaseCartItemQty);
 router.post('/cart/delete-product', shopController.postDeleteProductFromCart);
-// router.post('/cart/decrease-qty-by-one', shopController.postDecreaseQtyByOne);
 router.post('/create-order', shopController.postOrder);
 
 module.exports = router;

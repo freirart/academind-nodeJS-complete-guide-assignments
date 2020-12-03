@@ -27,8 +27,7 @@ exports.getEditProductPage = (req, res, next) => {
     .then(product => {
       res.render('admin/edit-product', {
         product,
-        pageTitle: 'Edit Product',
-        path: '/admin/edit-product',
+        path: '/admin/manage-products',
       });
     })
     .catch(err => console.error(err));
@@ -41,6 +40,7 @@ exports.getDeleteProductPage = (req, res, next) => {
       res.render('admin/delete-product', {
         product,
         pageTile: `Deleting product ${productId}`,
+        path: '/admin/manage-products',
       });
     })
     .catch(err => console.error(err));
@@ -59,7 +59,7 @@ exports.postAddProduct = (req, res, next) => {
 exports.postDeleteProduct = (req, res, next) => {
   const { productId } = req.body;
   Product.deleteById(productId)
-    .then(() => res.redirect('/'))
+    .then(() => res.redirect('/admin/manage-products'))
     .catch(err => console.error(err));
 }
 
@@ -67,6 +67,6 @@ exports.postEditProduct = (req, res, next) => {
   const { id, title, imageURL, price, description } = req.body;
   const updatedProduct = new Product(title, imageURL, price, description, id);
   updatedProduct.save()
-    .then(() => res.redirect('/'))
+    .then(() => res.redirect('/admin/manage-products'))
     .catch(err => console.error(err));
 }

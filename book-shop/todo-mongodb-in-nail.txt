@@ -1,3 +1,0 @@
-deletar o produto ao diminuir a quantidade para 0
-
-remover do carrinho dos usuarios os produtos que forem deletados

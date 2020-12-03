@@ -92,36 +92,17 @@ class User {
       );
   }
 
-  decreaseCartItemQty(productId, fn) {
+  decreaseCartItemQty(productId) {
     const productIndex = this.cart.items.findIndex(item => {
       return item.productId.toString() === productId.toString();
     });
 
     if (productIndex === -1) throw new Error;
     
-    let updatedCartItems = this.cart.items;
+    if (this.cart.items[productIndex].qty - 1 === 0)
+      return this.deleteItemFromCart(productId);
     
-    if (this.cart.items[productIndex].qty - 1 === 0) {
-      updatedCartItems = this.cart.items.filter(item => {
-        return item.productId.toString() !== productId.toString();
-      });
-  
-      const db = getDb();
-      return db
-        .collection('users')
-        .updateOne(
-          { _id: new ObjectId(this._id) },
-          {
-            $set: { 
-              cart: { 
-                items: updatedCartItems, 
-                totalValue: getCartTotalValue(updatedCartItems)
-              } 
-            } 
-          }
-        );
-    }
-
+    const updatedCartItems = this.cart.items;
     updatedCartItems[productIndex].qty -= 1;
 
     const db = getDb();
@@ -137,6 +118,32 @@ class User {
           } 
         }
       )
+  }
+
+  postOrder(products) {
+    const db = getDb();
+    const order = {
+      items: products,
+      user: {
+        _id: new ObjectId(this._id),
+        name: this.name
+      },
+    };
+    return db.collection('orders')
+      .insertOne(order)
+      .then(() => {
+        return db.collection('users').updateOne(
+          { _id: new ObjectId(this._id) }, 
+          { $set: { cart: { items : [] } } }
+        );
+      })
+      .catch(err => console.error(err));
+  }
+
+  getOrders() {
+    const db = getDb();
+    return db.collection('orders')
+      .find({ 'user._id': new ObjectId(this._id) }).toArray();
   }
 
   static findById(userId) {

@@ -21,6 +21,7 @@ exports.getProductDetailsPage = (req, res, next) => {
       res.render('shop/product-detail', {
         product,
         pageTitle: `Product ${productId} Details`,
+        path: '/'
       })
     })
     .catch(err => console.log(err));
@@ -39,13 +40,14 @@ exports.getCartPage = (req, res, next) => {
 };
 
 exports.getOrderPage = (req, res, next) => {
-  req.user.getOrders({ include: ['products'] })
+  req.user.getOrders()
     .then(orders => {
       res.render('shop/orders', {
         orders,
         pageTitle: 'Orders',
-      })
-    })
+        path: '/orders'
+      });
+    });
 };
 
 // POST requests
@@ -73,26 +75,8 @@ exports.postDecreaseCartItemQty = (req, res, next) => {
 }
 
 exports.postOrder = (req, res, next) => {
-  let fetchedCart;
   req.user.getCart()
-    .then(cart => {
-      fetchedCart = cart;
-      return cart.getProducts()
-    })
-    .then(products => {
-      return req.user
-        .createOrder()
-        .then(order => {
-          return order.addProducts(
-              products.map(product => {
-                product.orderItem = { qty: product.cartItem.qty }
-                return product;
-              })
-            );
-        })
-        .catch(err => console.log(err));
-    })
-    .then(orderPosted => fetchedCart.setProducts(null))
-    .then(success => res.redirect('/orders'))
-    .catch(err => console.log(err));
+    .then(products => req.user.postOrder(products))
+    .then(() => res.redirect('/orders'))
+    .catch(err => console.error(err));
 };
