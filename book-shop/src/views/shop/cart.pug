@@ -4,40 +4,40 @@ block styles
   link(rel="stylesheet" type="text/css" href="/cart.css")
 
 block content
-  if products.length > 0
+  if cart.items.length > 0 
     .content
       .prod-list
-        each p in products
+        each i in cart.items
           article
             .product-data
-              img(src!=p.imageURL alt!=p.title)
+              img(src!=i.productId.imageURL alt!=i.productId.title)
               .text
-                h3 #{p.title}
-                p #{p.description}
+                h3 #{i.productId.title}
+                p #{i.productId.description}
             .controllers
               .left
-                strong $ #{p.price}
+                strong $ #{i.price}
                 .qty-controllers
                   form(method="POST" action="/cart-decrease")
                     button(type="submit") -
-                    input(type="hidden" name="productId" value!=p._id)
-                  span #{p.qty}
+                    input(type="hidden" name="productId" value!=i.productId._id)
+                  span #{i.qty}
                   form(method="POST" action="/cart")
                     button(type="submit") +
-                    input(type="hidden" name="productId" value!=p._id)
-                small Total: $ !{p.price * p.qty}
+                    input(type="hidden" name="productId" value!=i.productId._id)
+                small Total: $ !{i.price * i.qty}
               form(action="/cart/delete-product/" method="POST")
                 button(type="submit")
                   i.fas.fa-trash-alt
-                input(type="hidden" name="productId" value!=p._id)
+                input(type="hidden" name="productId" value!=i.productId._id)
       .finish-buy
         .finish-buy-content
           p Total: 
-            strong $ 
+            strong $ #{cart.totalValue}
           form(action="/create-order" method="POST")
             button(type="submit")
               i.fas.fa-cart-plus 
               span Finish Order
   else
     h1 #{pageTitle}
-    h2 Products added to the cart...
+    h2 You have no products added to the cart :(

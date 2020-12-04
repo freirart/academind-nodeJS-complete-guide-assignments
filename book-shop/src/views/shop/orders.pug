@@ -1,16 +1,21 @@
 extends ../components/header.pug
 
+block styles
+  link(rel="stylesheet" type="text/css" href="/order.css")
+
 block content
   if orders.length > 0
-    ul(style="align-self: flex-start; list-style: none; width: 100%;")
+    ul.order-list
       each order in orders
-        li(style="line-height: 1.75rem; border: 1px solid lightgray; width: 100%; margin: .5rem 0;")
-          h1(style="text-align: left;") # #{order._id}
-          ul(style="padding-left: 2rem;")
+        li.order-item
+          h2.order-item-id # #{order._id}
+          ul.order-item-items-list
             each item in order.items
-              li(style="line-height: 2.75rem;") #{item.title} (#{item.qty}) $ 
-                b #{item.qty * item.price}
+              li.order-item-items-list-item #{item.productId.title} (#{item.qty})
+                b $ #{item.qty * item.productId.price}
+          p.align-right Order Value: 
+            strong $ #{order.totalValue}
 
   else
     h1 #{pageTitle}
-    h2 Quite empty right here, don't you think?
+    h2 Quite lonely here, don't you think?

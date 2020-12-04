@@ -1,156 +1,104 @@
-const { ObjectId } = require("mongodb");
-const { getDb } = require('../utils/database');
+const { Schema, model, Types } = require('mongoose');
 
-function getCartTotalValue(cart) {
+const getCartTotalValue = function(cart) {
   return cart.reduce((prev, curr) => {
-    return prev.price * prev.qty + Number(curr.price) * curr.qty;
-  }, { price: 0.0, qty: 1 });
-}
-
-class User {
-  constructor(name, email, cart, id) {
-    this.name = name;
-    this.email = email;
-    this.cart = cart || { items: [], totalValue: 0.0 };
-    this._id = new ObjectId(id);
-  }
-
-  save() {
-    const db = getDb();
-    return db.collection('users').insertOne(this);
-  }
-
-  addToCart(product) {
-    const cartProductIndex = this.cart.items.findIndex(p => {
-      return p.productId.toString() === product._id.toString();
-    });
-    let newQty = 1;
-    const updatedCartItems = [...this.cart.items];
-
-    if (cartProductIndex !== -1) {
-      newQty += this.cart.items[cartProductIndex].qty;
-      updatedCartItems[cartProductIndex].qty = newQty;
-    } else {
-      updatedCartItems.push({
-        productId: new ObjectId(product._id),
-        qty: newQty,
-        price: product.price
-      });
-    }
-
-    const updatedCart = {
-      items: updatedCartItems,
-      totalValue: getCartTotalValue(updatedCartItems)
+    return {
+      price: +prev.price * prev.qty + Number(curr.price) * curr.qty, 
+      qty: 1
     };
+  }, { price: 0.0, qty: 1 }).price;
+};
 
-    const db = getDb();
-    return db
-      .collection('users')
-      .updateOne(
-        { _id: new ObjectId(this._id) },
-        { $set: { cart: updatedCart } }
-      );
-  }
-
-  getCart() {
-    const db = getDb();
-    const productIds = this.cart.items.map(i => i.productId);
-    return db
-      .collection('products')
-      .find({ _id: { $in: productIds } })
-      .toArray()
-      .then(products => {
-        return products.map(p => {
-          return {
-            ...p,
-            qty: this.cart.items.find(i => {
-              return i.productId.toString() === p._id.toString();
-            }).qty
-          }
-        })
-      });
-  }
-
-  deleteItemFromCart(productId) {
-    const updatedCartItems = this.cart.items.filter(item => {
-      return item.productId.toString() !== productId.toString();
-    });
-
-    const db = getDb();
-    return db
-      .collection('users')
-      .updateOne(
-        { _id: new ObjectId(this._id) },
-        {
-          $set: { 
-            cart: { 
-              items: updatedCartItems, 
-              totalValue: getCartTotalValue(updatedCartItems)
-            } 
-          } 
-        }
-      );
-  }
-
-  decreaseCartItemQty(productId) {
-    const productIndex = this.cart.items.findIndex(item => {
-      return item.productId.toString() === productId.toString();
-    });
-
-    if (productIndex === -1) throw new Error;
-    
-    if (this.cart.items[productIndex].qty - 1 === 0)
-      return this.deleteItemFromCart(productId);
-    
-    const updatedCartItems = this.cart.items;
-    updatedCartItems[productIndex].qty -= 1;
-
-    const db = getDb();
-    return db.collection('users')
-      .updateOne(
-        { _id : new ObjectId(this._id) },
-        { 
-          $set: { 
-            cart: { 
-              items: updatedCartItems, 
-              totalValue: getCartTotalValue(updatedCartItems) 
-            } 
-          } 
-        }
-      )
-  }
-
-  postOrder(products) {
-    const db = getDb();
-    const order = {
-      items: products,
-      user: {
-        _id: new ObjectId(this._id),
-        name: this.name
+const userSchema = new Schema({
+  name: { type: String, required: true },
+  email: { type: String, required: true },
+  cart: {
+    items: [{ 
+      productId: {
+        type: Types.ObjectId,
+        required: true,
+        ref: 'Product',
       },
-    };
-    return db.collection('orders')
-      .insertOne(order)
-      .then(() => {
-        return db.collection('users').updateOne(
-          { _id: new ObjectId(this._id) }, 
-          { $set: { cart: { items : [] } } }
-        );
-      })
-      .catch(err => console.error(err));
-  }
+      qty: { type: Number, default: 1 },
+      price: { type: Number, default: 0.0 },
+    }],
+    totalValue: { type: Number, default: 0.0 },
+  },
+});
 
-  getOrders() {
-    const db = getDb();
-    return db.collection('orders')
-      .find({ 'user._id': new ObjectId(this._id) }).toArray();
-  }
-
-  static findById(userId) {
-    const db = getDb();
-    return db.collection('users').findOne({ _id: new ObjectId(userId) })
-      .then(user => user);
-  }
+userSchema.methods.clearCart = function() {
+  this.cart.items = [];
+  this.cart.totalValue = 0.0;
+  return this.save();
 }
 
-module.exports = User;
+userSchema.methods.addToCart = function(product) {
+  const cartProductIndex = this.cart.items.findIndex(p => {
+    return p.productId.toString() === product._id.toString();
+  });
+
+  const productIsAlreadyInTheCart = cartProductIndex !== -1;
+  let newQty = 1;
+  const updatedCartItems = [...this.cart.items];
+
+  if (productIsAlreadyInTheCart) {
+    newQty += this.cart.items[cartProductIndex].qty;
+    updatedCartItems[cartProductIndex].qty = newQty;
+  } else {
+    updatedCartItems.push({
+      productId: new Types.ObjectId(product._id),
+      qty: newQty,
+      price: product.price
+    });
+  }
+
+  this.cart = {
+    items: updatedCartItems,
+    totalValue: getCartTotalValue(updatedCartItems)
+  };
+  
+  return this.save();
+};
+
+userSchema.methods.deleteItemFromCart = function(productId) {
+
+  if (this.cart.items.length === 1)
+    return this.clearCart();
+
+  const updatedCartItems = this.cart.items.filter(item => {
+    return item.productId.toString() !== productId.toString();
+  });
+
+  this.cart = {
+    items: updatedCartItems, 
+    totalValue: (
+      updatedCartItems.length === 0 
+      ? 0.0 
+      : getCartTotalValue(updatedCartItems)
+    )
+  };
+
+  return this.save();
+};
+
+userSchema.methods.decreaseCartItemQty = function(productId) {
+  const productIndex = this.cart.items.findIndex(item => {
+    return item.productId.toString() === productId.toString();
+  });
+
+  if (productIndex === -1) throw new Error;
+  
+  if (this.cart.items[productIndex].qty - 1 === 0)
+    return this.deleteItemFromCart(productId);
+    
+  const updatedCartItems = this.cart.items;
+  updatedCartItems[productIndex].qty -= 1;
+
+  this.cart = { 
+    items: updatedCartItems, 
+    totalValue: getCartTotalValue(updatedCartItems) 
+  };
+  return this.save();
+};
+
+module.exports = model('User', userSchema);

@@ -10,7 +10,7 @@ exports.getAddProductPage = (req, res, next) => {
 };
 
 exports.getManageProductsPage = (req, res, next) => {
-  Product.fetchAll()
+  Product.find({})
     .then(products => {
       res.render('admin/manage-products', {
         products,
@@ -50,7 +50,7 @@ exports.getDeleteProductPage = (req, res, next) => {
 
 exports.postAddProduct = (req, res, next) => {
   const { title, imageURL, price, description } = req.body;
-  const product = new Product(title, imageURL, price, description);
+  const product = new Product({ title, imageURL, price, description });
   product.save()
     .then(() => res.redirect('/'))
     .catch(err => console.error(err));
@@ -58,15 +58,16 @@ exports.postAddProduct = (req, res, next) => {
 
 exports.postDeleteProduct = (req, res, next) => {
   const { productId } = req.body;
-  Product.deleteById(productId)
+  Product.findOneAndDelete({ _id: productId })
     .then(() => res.redirect('/admin/manage-products'))
     .catch(err => console.error(err));
 }
 
 exports.postEditProduct = (req, res, next) => {
   const { id, title, imageURL, price, description } = req.body;
-  const updatedProduct = new Product(title, imageURL, price, description, id);
-  updatedProduct.save()
+  Product.findOneAndUpdate({ _id: id }, {
+    title, imageURL, price, description
+  })
     .then(() => res.redirect('/admin/manage-products'))
     .catch(err => console.error(err));
 }

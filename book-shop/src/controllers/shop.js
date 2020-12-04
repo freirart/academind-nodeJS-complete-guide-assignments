@@ -1,9 +1,10 @@
 const Product = require('../models/product');
+const Order = require('../models/order');
 
 // GET requests
 
 exports.getShopPage = (req, res, next) => {
-  Product.fetchAll()
+  Product.find({})
     .then(products => {
       res.render('shop/product-list', {
         products, 
@@ -28,19 +29,21 @@ exports.getProductDetailsPage = (req, res, next) => {
 }
 
 exports.getCartPage = (req, res, next) => {
-  req.user.getCart()
-    .then(products => {
+  req.user
+    .populate('cart.items.productId')
+    .execPopulate()
+    .then(user => {
       res.render('shop/cart', {
-        products,
-        pageTitle: 'Cart',
+        cart: user.cart,
         path: '/cart',
+        pageTitle: 'Cart',
       });
     })
-    .catch(err => console.error(err));
+    .catch(err => console.log(err));
 };
 
 exports.getOrderPage = (req, res, next) => {
-  req.user.getOrders()
+  Order.find({ 'user._id': req.user._id })
     .then(orders => {
       res.render('shop/orders', {
         orders,
@@ -75,8 +78,20 @@ exports.postDecreaseCartItemQty = (req, res, next) => {
 }
 
 exports.postOrder = (req, res, next) => {
-  req.user.getCart()
-    .then(products => req.user.postOrder(products))
+  req.user
+    .populate('cart.items.productId')
+    .execPopulate()
+    .then(user => {
+      return Order.create({
+        totalValue: user.cart.totalValue,
+        items: user.cart.items,
+        user: {
+          _id: user._id,
+          name: user.name
+        },
+      });
+    })
+    .then(() => req.user.clearCart())
     .then(() => res.redirect('/orders'))
     .catch(err => console.error(err));
 };

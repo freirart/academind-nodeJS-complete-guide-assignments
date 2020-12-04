@@ -19,9 +19,9 @@ app.set('views', 'src/views');
 app.use(express.static(path.join(__dirname, '..', 'public')));
 
 app.use((req, res, next) => {
-  User.findById('5fc63efff95b96d70a541ad4')
+  User.findById(process.env.USER_ID)
     .then(user => {
-      req.user = new User(user.name, user.email, user.cart, user._id);
+      req.user = user;
       next();
     })
     .catch(err => console.error(err));
